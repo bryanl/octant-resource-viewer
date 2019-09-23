@@ -9,6 +9,12 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~8.2.7",
@@ -20,21 +26,23 @@
     "@angular/platform-browser-dynamic": "~8.2.7",
     "@angular/router": "~8.2.7",
     "@clr/angular": "^2.2.0",
+    "@clr/icons": "2.2.0",
+    "@clr/ui": "2.2.0",
+    "@webcomponents/custom-elements": "^1.0.0",
+    "cytoscape": "^3.10.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
-    "zone.js": "~0.9.1",
-    "@clr/ui": "2.2.0",
-    "@clr/icons": "2.2.0",
-    "@webcomponents/custom-elements": "^1.0.0"
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.5",
     "@angular/cli": "~8.3.5",
     "@angular/compiler-cli": "~8.2.7",
     "@angular/language-service": "~8.2.7",
-    "@types/node": "~8.9.4",
+    "@types/cytoscape": "^3.8.2",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -43,9 +51,12 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "prettier": "1.18.2",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "2.0.1",
     "typescript": "~3.5.3"
   }
 }
