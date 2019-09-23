@@ -11,7 +11,11 @@ export class AppComponent {
   elements = {
     nodes: [
       {
-        data: { id: 'deployment' },
+        data: {
+          id: 'deployment',
+          name: 'deployment apps/v1',
+          label: 'top left',
+        },
       },
       {
         data: { id: 'replica-set' },
@@ -34,19 +38,19 @@ export class AppComponent {
     ],
     edges: [
       {
-        data: { id: '1', source: 'replica-set', target: 'deployment' },
+        data: { source: 'replica-set', target: 'deployment' },
       },
       {
-        data: { id: '2', source: 'pods', target: 'replica-set' },
+        data: { source: 'pods', target: 'replica-set' },
       },
       {
-        data: { id: '3', source: 'service', target: 'pods' },
+        data: { source: 'service', target: 'pods' },
       },
       {
-        data: { id: '4', source: 'ingress', target: 'service' },
+        data: { source: 'ingress', target: 'service' },
       },
       {
-        data: { id: '5', source: 'pods', target: 'service-account' },
+        data: { source: 'pods', target: 'service-account' },
       },
     ],
   };
@@ -60,7 +64,26 @@ export class AppComponent {
     {
       selector: 'node',
       style: {
+        color: '#313131',
+        'font-family': 'Metropolis',
         label: 'data(id)',
+        shape: 'rectangle',
+        'background-opacity': '50%',
+        'background-color': '#DFF0D0',
+        'border-color': '#62A420',
+        'border-style': 'solid',
+        'border-width': '2px',
+        padding: '9px',
+        'text-valign': 'top',
+        'text-halign': 'center',
+        'text-margin-y': '-6px',
+      },
+    },
+    {
+      selector: 'edge',
+      style: {
+        'target-arrow-shape': 'triangle',
+        'line-color': '#C1CDD4',
       },
     },
   ];

@@ -57,5 +57,7 @@ export class CytoscapeComponent implements OnChanges {
       const node: SingularData = e.target;
       localSelect.emit(node.data());
     });
+
+    cy.autolock(true);
   }
 }

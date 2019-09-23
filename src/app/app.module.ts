@@ -8,17 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CytoscapeComponent } from './components/cytoscape/cytoscape.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CytoscapeComponent
-  ],
+  declarations: [AppComponent, CytoscapeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ClarityModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -8,9 +8,8 @@ describe('CytoscapeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CytoscapeComponent ]
-    })
-    .compileComponents();
+      declarations: [CytoscapeComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
