@@ -24,7 +24,7 @@ export class AppComponent {
     nodes: [
       node('deployment', {
         name: 'deployment',
-        status: 'ok',
+        status: 'warning',
         apiVersion: 'apps/v1',
         kind: 'Deployment',
       }),
@@ -36,8 +36,7 @@ export class AppComponent {
         apiVersion: 'v1',
         podOK: 50,
       }),
-      node('service'),
-      node('ingress'),
+      node('ingress', { name: 'ingress', status: 'error' }),
       node('service-account'),
       node('node1'),
       node('node3'),
