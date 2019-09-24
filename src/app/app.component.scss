@@ -5,3 +5,19 @@
   overflow: auto;
   overflow-y: hidden;
 }
+
+.container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.panel {
+  flex-basis: 350px;
+  background-color: pink;
+}
+
+.viewer {
+  flex: 1 1 auto;
+}
