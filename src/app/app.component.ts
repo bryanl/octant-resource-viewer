@@ -8,6 +8,8 @@ const colors = {
   warningBorder: '#EDB200',
   error: '#F5DBD9',
   errorBorder: '#e12200',
+
+  edge: '#c1cdd4',
 };
 
 @Component({
@@ -22,14 +24,14 @@ export class AppComponent {
     nodes: [
       node('deployment', {
         name: 'deployment',
-        status: 'warning',
+        status: 'ok',
         apiVersion: 'apps/v1',
         kind: 'Deployment',
       }),
-      node('replica-set', { name: 'deployment-12345', status: 'error' }),
+      node('replica-set', { name: 'deployment-1', status: 'ok' }),
       node('service'),
       node('pods', {
-        name: 'deployment-12345 pods',
+        name: 'deployment-1 pods',
         kind: 'Pod',
         apiVersion: 'v1',
         podOK: 50,
@@ -52,15 +54,18 @@ export class AppComponent {
       ),
       connect(
         'service',
-        'pods'
+        'pods',
+        'implicit'
       ),
       connect(
         'ingress',
-        'service'
+        'service',
+        'implicit'
       ),
       connect(
         'pods',
-        'service-account'
+        'service-account',
+        'field'
       ),
     ],
   };
@@ -82,6 +87,7 @@ export class AppComponent {
       selector: 'node',
       style: {
         'font-family': 'Metropolis',
+        'font-size': 12,
         label: 'data(name)',
         'border-style': 'solid',
         'border-width': 2,
@@ -115,14 +121,41 @@ export class AppComponent {
     {
       selector: 'edge',
       style: {
-        'target-arrow-shape': 'triangle',
-        'target-arrow-color': '#C1CDD4',
-        'line-color': '#C1CDD4',
+        'font-family': 'Metropolis',
         width: '2px',
         'curve-style': 'bezier',
         'arrow-scale': 1,
         'target-distance-from-node': '8px',
         'source-distance-from-node': '8px',
+      },
+    },
+    {
+      selector: 'edge[connectionType = "explicit"]',
+      style: {
+        'source-arrow-shape': 'triangle',
+        'line-color': colors.edge,
+        'source-arrow-color': colors.edge,
+      },
+    },
+    {
+      selector: 'edge[connectionType = "implicit"]',
+      style: {
+        'line-color': colors.edge,
+        'line-style': 'dashed',
+        'line-dash-pattern': [6, 3],
+      },
+    },
+    {
+      selector: 'edge[connectionType = "field"]',
+      style: {
+        'font-size': 10,
+        'text-margin-y': -20,
+        label: 'data(label)',
+        'source-arrow-shape': 'tee',
+        'line-color': colors.edge,
+        'source-arrow-color': colors.edge,
+        'text-rotation': 'autorotate',
+        'line-style': 'dashed',
       },
     },
     {
@@ -192,8 +225,12 @@ const node = (id: string, options?: NodeOptions) => {
   };
 };
 
-const connect = (source: string, target: string) => {
+const connect = (
+  source: string,
+  target: string,
+  connectionType = 'explicit'
+) => {
   return {
-    data: { source, target },
+    data: { source, target, connectionType },
   };
 };
