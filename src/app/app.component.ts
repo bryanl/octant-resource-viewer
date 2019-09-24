@@ -10,8 +10,13 @@ export class AppComponent {
 
   elements = {
     nodes: [
-      node('deployment', 'warning'),
-      node('replica-set', 'error'),
+      node('deployment', {
+        name: 'deployment',
+        status: 'warning',
+        apiVersion: 'apps/v1',
+        kind: 'Deployment',
+      }),
+      node('replica-set', { name: 'deployment-12345', status: 'error' }),
       node('service'),
       node('pods'),
       node('service'),
@@ -57,7 +62,7 @@ export class AppComponent {
       selector: 'node',
       style: {
         'font-family': 'Metropolis',
-        label: 'data(id)',
+        label: 'data(name)',
         shape: 'rectangle',
         'border-style': 'solid',
         'border-width': '2px',
@@ -104,7 +109,7 @@ export class AppComponent {
         'curve-style': 'bezier',
         'arrow-scale': 1,
         'target-distance-from-node': '8px',
-        'source-distance-from-node': '8px',
+        'source-distance-from-node': '8bbhpx',
       },
     },
   ];
@@ -115,9 +120,19 @@ export class AppComponent {
   };
 }
 
-const node = (name: string, status = 'ok') => {
+interface NodeOptions {
+  name: string;
+  status?: string;
+  apiVersion?: string;
+  kind?: string;
+}
+
+const node = (id: string, options?: NodeOptions) => {
+  options = options || { name: id };
+  options.status = options.status || 'ok';
+
   return {
-    data: { id: name, status },
+    data: { id, ...options },
   };
 };
 
