@@ -10,8 +10,8 @@ export class AppComponent {
 
   elements = {
     nodes: [
-      node('deployment'),
-      node('replica-set'),
+      node('deployment', 'warning'),
+      node('replica-set', 'error'),
       node('service'),
       node('pods'),
       node('service'),
@@ -56,19 +56,42 @@ export class AppComponent {
     {
       selector: 'node',
       style: {
-        color: '#313131',
         'font-family': 'Metropolis',
         label: 'data(id)',
         shape: 'rectangle',
-        'background-opacity': '50%',
-        'background-color': '#DFF0D0',
-        'border-color': '#62A420',
         'border-style': 'solid',
         'border-width': '2px',
         padding: '9px',
         'text-valign': 'top',
         'text-halign': 'center',
         'text-margin-y': '-6px',
+      },
+    },
+    {
+      selector: 'node[status = "ok"]',
+      style: {
+        color: '#313131',
+        'background-opacity': '50%',
+        'background-color': '#DFF0D0',
+        'border-color': '#62A420',
+      },
+    },
+    {
+      selector: 'node[status = "warning"]',
+      style: {
+        color: '#313131',
+        'background-opacity': '50%',
+        'background-color': '#FEF3B5',
+        'border-color': '#EDB200',
+      },
+    },
+    {
+      selector: 'node[status = "error"]',
+      style: {
+        color: '#313131',
+        'background-opacity': '50%',
+        'background-color': '#F5DBD9',
+        'border-color': '#e12200',
       },
     },
     {
@@ -80,8 +103,8 @@ export class AppComponent {
         width: '2px',
         'curve-style': 'bezier',
         'arrow-scale': 1,
-        'target-distance-from-node': '22px',
-        'source-distance-from-node': '22px',
+        'target-distance-from-node': '8px',
+        'source-distance-from-node': '8px',
       },
     },
   ];
@@ -92,9 +115,9 @@ export class AppComponent {
   };
 }
 
-const node = (name: string) => {
+const node = (name: string, status = 'ok') => {
   return {
-    data: { id: name },
+    data: { id: name, status },
   };
 };
 
