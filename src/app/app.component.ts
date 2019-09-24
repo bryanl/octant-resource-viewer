@@ -10,48 +10,35 @@ export class AppComponent {
 
   elements = {
     nodes: [
-      {
-        data: {
-          id: 'deployment',
-          name: 'deployment apps/v1',
-          label: 'top left',
-        },
-      },
-      {
-        data: { id: 'replica-set' },
-      },
-      {
-        data: { id: 'pods' },
-      },
-      {
-        data: { id: 'service' },
-      },
-      {
-        data: { id: 'ingress' },
-      },
-      {
-        data: { id: 'service-account' },
-      },
-      {
-        data: { id: 'pod' },
-      },
+      node('deployment'),
+      node('replica-set'),
+      node('service'),
+      node('pods'),
+      node('service'),
+      node('ingress'),
+      node('service-account'),
     ],
     edges: [
-      {
-        data: { source: 'replica-set', target: 'deployment' },
-      },
-      {
-        data: { source: 'pods', target: 'replica-set' },
-      },
-      {
-        data: { source: 'service', target: 'pods' },
-      },
-      {
-        data: { source: 'ingress', target: 'service' },
-      },
-      {
-        data: { source: 'pods', target: 'service-account' },
-      },
+      connect(
+        'replica-set',
+        'deployment'
+      ),
+      connect(
+        'pods',
+        'replica-set'
+      ),
+      connect(
+        'service',
+        'pods'
+      ),
+      connect(
+        'ingress',
+        'service'
+      ),
+      connect(
+        'pods',
+        'service-account'
+      ),
     ],
   };
 
@@ -88,3 +75,15 @@ export class AppComponent {
     },
   ];
 }
+
+const node = (name: string) => {
+  return {
+    data: { id: name },
+  };
+};
+
+const connect = (source: string, target: string) => {
+  return {
+    data: { source, target },
+  };
+};
