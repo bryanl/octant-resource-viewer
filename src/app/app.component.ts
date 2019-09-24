@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Stylesheet } from 'cytoscape';
 
 const colors = {
   ok: '#DFF0D0',
@@ -67,7 +68,7 @@ export class AppComponent {
   layout = {
     name: 'breadthfirst',
     grid: true,
-    spacingFactor: 0.75,
+    spacingFactor: 0.6,
   };
 
   style = [
@@ -83,11 +84,11 @@ export class AppComponent {
         'font-family': 'Metropolis',
         label: 'data(name)',
         'border-style': 'solid',
-        'border-width': '2px',
-        padding: '9px',
+        'border-width': 2,
+        padding: 9,
         'text-valign': 'top',
         'text-halign': 'center',
-        'text-margin-y': '-6px',
+        'text-margin-y': -6,
       },
     },
     {
@@ -137,7 +138,7 @@ export class AppComponent {
           }
           return colors.okBorder;
         },
-        'border-width': '2px',
+        'border-width': 2,
         content: 'data(name)',
         'pie-size': '150%',
         'pie-1-background-color': colors.ok,
