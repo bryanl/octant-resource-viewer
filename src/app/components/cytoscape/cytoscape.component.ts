@@ -23,7 +23,7 @@ export class CytoscapeComponent implements OnChanges {
   @Input() public layout: any;
   @Input() public zoom: any;
 
-  @Output() out: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selected: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private renderer: Renderer2) {
     this.layout = this.layout || {
@@ -43,7 +43,6 @@ export class CytoscapeComponent implements OnChanges {
 
   public render() {
     const cyContainer = this.renderer.selectRootElement(this.cy.nativeElement);
-    const localSelect = this.out;
     const cy = cytoscape({
       container: cyContainer,
       layout: this.layout,
@@ -55,7 +54,7 @@ export class CytoscapeComponent implements OnChanges {
 
     cy.on('tap', 'node', e => {
       const node: SingularData = e.target;
-      localSelect.emit(node.data());
+      this.selected.emit(node.data());
     });
 
     cy.autolock(true);

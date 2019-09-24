@@ -10,20 +10,18 @@
     </div>
   </header>
   <div class="container">
-    <div class="panel">
-      Top
-    </div>
     <div class="viewer clr-row">
       <div class="clr-col-9">
         <div class="view-container">
           <app-cytoscape
             [elements]="elements"
             [layout]="layout"
-            [style]="style">
+            [style]="style"
+            [zoom]="zoom">
           </app-cytoscape>
         </div>
       </div>
-      <div class="clr-col-3">side</div>
+      <div class="clr-col-3 sidebar">side</div>
     </div>
 
   </div>

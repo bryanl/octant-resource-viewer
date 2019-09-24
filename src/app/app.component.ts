@@ -17,6 +17,9 @@ export class AppComponent {
       node('service'),
       node('ingress'),
       node('service-account'),
+      node('node1'),
+      node('node2'),
+      node('node3'),
     ],
     edges: [
       connect(
@@ -44,6 +47,8 @@ export class AppComponent {
 
   layout = {
     name: 'breadthfirst',
+    grid: true,
+    spacingFactor: 0.75,
   };
 
   // so we can see the ids
@@ -70,10 +75,21 @@ export class AppComponent {
       selector: 'edge',
       style: {
         'target-arrow-shape': 'triangle',
+        'target-arrow-color': '#C1CDD4',
         'line-color': '#C1CDD4',
+        width: '2px',
+        'curve-style': 'bezier',
+        'arrow-scale': 1,
+        'target-distance-from-node': '22px',
+        'source-distance-from-node': '22px',
       },
     },
   ];
+
+  zoom = {
+    min: 0.5,
+    max: 1.5,
+  };
 }
 
 const node = (name: string) => {

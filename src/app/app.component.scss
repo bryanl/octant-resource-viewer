@@ -13,11 +13,10 @@
   justify-content: flex-start;
 }
 
-.panel {
-  flex-basis: 350px;
-  background-color: pink;
-}
-
 .viewer {
   flex: 1 1 auto;
+}
+
+.sidebar {
+  background-color: #eeeeee;
 }
