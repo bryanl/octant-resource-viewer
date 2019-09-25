@@ -10,15 +10,23 @@
     </div>
   </header>
   <div class="container">
+    <div class="controlPanel clr-row">
+      <div class="clr-col-12">
+        <form clrForm>
+          <clr-select-container>
+            <label for="scenario">Current Scenario</label>
+            <select (ngModelChange)="setScenario($event)" [ngModel]="currentScenario" clrSelect
+                    name="scenario">
+              <option *ngFor="let scenario of scenarios" [value]="scenario">{{scenario}}</option>
+            </select>
+          </clr-select-container>
+        </form>
+      </div>
+    </div>
     <div class="viewer clr-row">
       <div class="clr-col-9">
         <div class="view-container">
-          <app-cytoscape
-            [elements]="elements"
-            [layout]="layout"
-            [style]="style"
-            [zoom]="zoom">
-          </app-cytoscape>
+          <app-resource-viewer [elements]="elements"></app-resource-viewer>
         </div>
       </div>
       <div class="clr-col-3 sidebar">side</div>
