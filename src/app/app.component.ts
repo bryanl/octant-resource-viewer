@@ -28,10 +28,19 @@ export class AppComponent {
         apiVersion: 'apps/v1',
         kind: 'Deployment',
       }),
-      node('replica-set', { name: 'deployment-1', status: 'ok' }),
+      node('replica-set-1', { name: 'deployment-1a', status: 'ok' }),
+      node('replica-set-2', { name: 'deployment-1b', status: 'ok' }),
       node('service'),
-      node('pods', {
-        name: 'deployment-1 pods',
+      node('pods-1', {
+        name: 'deployment-1a pods',
+        kind: 'Pod',
+        apiVersion: 'v1',
+        podOK: 5,
+        podWarning: 2,
+        podError: 1,
+      }),
+      node('pods-2', {
+        name: 'deployment-1b pods',
         kind: 'Pod',
         apiVersion: 'v1',
         podOK: 5,
@@ -46,16 +55,24 @@ export class AppComponent {
     ],
     edges: [
       connect(
-        'replica-set',
+        'replica-set-1',
         'deployment'
       ),
       connect(
-        'pods',
-        'replica-set'
+        'replica-set-2',
+        'deployment'
+      ),
+      connect(
+        'pods-1',
+        'replica-set-1'
+      ),
+      connect(
+        'pods-2',
+        'replica-set-2'
       ),
       connect(
         'service',
-        'pods',
+        'pods-1',
         'implicit'
       ),
       connect(
@@ -64,7 +81,12 @@ export class AppComponent {
         'implicit'
       ),
       connect(
-        'pods',
+        'pods-1',
+        'service-account',
+        'field'
+      ),
+      connect(
+        'pods-2',
         'service-account',
         'field'
       ),
@@ -72,9 +94,16 @@ export class AppComponent {
   };
 
   layout = {
-    name: 'breadthfirst',
-    grid: true,
-    spacingFactor: 0.6,
+    name: 'klay',
+    klay: {
+      edgeSpacingFactor: 1,
+      spacing: 100,
+      direction: 'LEFT',
+    },
+    // name: 'breadthfirst',
+    // grid: true,
+    // spacingFactor: 0.6,
+    // maximal: true,
   };
 
   style = [
@@ -88,14 +117,14 @@ export class AppComponent {
       selector: 'node',
       style: {
         'font-family': 'Metropolis',
-        'font-size': 12,
+        'font-size': 10,
         label: 'data(name)',
         'border-style': 'solid',
-        'border-width': 2,
+        'border-width': 1,
         padding: 9,
-        'text-valign': 'top',
+        'text-valign': 'bottom',
         'text-halign': 'center',
-        'text-margin-y': -6,
+        'text-margin-y': 6,
       },
     },
     {
@@ -117,6 +146,8 @@ export class AppComponent {
       style: {
         'background-color': colors.error,
         'border-color': colors.errorBorder,
+        'border-style': 'dashed',
+        'border-dash-offset': 5,
       },
     },
     {
@@ -172,7 +203,7 @@ export class AppComponent {
           }
           return colors.okBorder;
         },
-        'border-width': 2,
+        'border-width': 1,
         content: 'data(name)',
         'pie-size': '150%',
         'pie-1-background-color': colors.ok,

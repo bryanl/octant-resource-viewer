@@ -10,6 +10,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import cytoscape, { SingularData, Stylesheet } from 'cytoscape';
+import klay from 'cytoscape-klay';
+
+cytoscape.use(klay);
 
 @Component({
   selector: 'app-cytoscape',
