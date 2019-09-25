@@ -77,7 +77,6 @@ export class ResourceViewerComponent {
         'background-color': colors.error,
         'border-color': colors.errorBorder,
         'border-style': 'dashed',
-        'border-dash-offset': 5,
       },
     },
     {
@@ -112,7 +111,6 @@ export class ResourceViewerComponent {
       style: {
         'font-size': 10,
         'text-margin-y': -20,
-        label: 'data(label)',
         'source-arrow-shape': 'tee',
         'line-color': colors.edge,
         'source-arrow-color': colors.edge,

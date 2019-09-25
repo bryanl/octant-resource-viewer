@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   Renderer2,
   SimpleChanges,
@@ -20,13 +21,14 @@ cytoscape.use(klay);
   styleUrls: ['./cytoscape.component.scss'],
 })
 export class CytoscapeComponent implements OnChanges {
-  @ViewChild('cy', { static: true }) private cy: ElementRef;
-  @Input() public elements: any;
+  @ViewChild('cy', { static: true }) private el: ElementRef;
+  @Input() public elements: [];
   @Input() public style: Stylesheet[];
   @Input() public layout: any;
   @Input() public zoom: any;
-
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
+
+  private cy: cytoscape.Core;
 
   constructor(private renderer: Renderer2) {
     this.layout = this.layout || {
@@ -41,25 +43,67 @@ export class CytoscapeComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.render();
-  }
+    if (!this.cy) {
+      const cyContainer = this.renderer.selectRootElement(
+        this.el.nativeElement
+      );
+      this.cy = cytoscape({
+        container: cyContainer,
+        layout: this.layout,
+        minZoom: this.zoom.min,
+        maxZoom: this.zoom.max,
+        style: this.style,
+        elements: this.elements,
+      });
 
-  public render() {
-    const cyContainer = this.renderer.selectRootElement(this.cy.nativeElement);
-    const cy = cytoscape({
-      container: cyContainer,
-      layout: this.layout,
-      minZoom: this.zoom.min,
-      maxZoom: this.zoom.max,
-      style: this.style,
-      elements: this.elements,
-    });
+      this.cy.on('tap', 'node', e => {
+        const node: SingularData = e.target;
+        this.selected.emit(node.data());
+        console.log(`tap`, node.data());
+      });
 
-    cy.on('tap', 'node', e => {
-      const node: SingularData = e.target;
-      this.selected.emit(node.data());
-    });
+      this.cy.layout({ ...this.layout, animate: false }).run();
+      this.cy.autolock(true);
+    } else {
+      console.log('???', changes);
 
-    cy.autolock(true);
+      this.cy.autolock(false);
+
+      const tracker: { [key: string]: boolean } = {};
+
+      changes.elements.currentValue.forEach(element => {
+        const id = element.data.id;
+        if (!id) {
+          console.log(`new item didn't have id`, element);
+        } else {
+          const prev = this.cy.$id(id);
+
+          if (prev.length === 1) {
+            console.log('updating item', {
+              id,
+              prev: prev.data(),
+              cur: element.data,
+            });
+            prev.data(element.data);
+          } else {
+            this.cy.add(element);
+          }
+        }
+
+        tracker[id] = true;
+      });
+
+      this.cy.elements('*').forEach(element => {
+        const id = element.id();
+        if (!tracker[id]) {
+          this.cy.remove(element);
+        }
+      });
+
+      this.cy.minZoom(this.zoom.min);
+      this.cy.maxZoom(this.zoom.max);
+      this.cy.layout({ ...this.layout, animate: false }).run();
+      this.cy.autolock(true);
+    }
   }
 }
