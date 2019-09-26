@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
 
   setScenario(name: string) {
     this.currentScenario = name;
-    console.log(this.scenariosService.scenarios());
-    this.elements = this.scenariosService.scenarios()[this.currentScenario];
+    this.elements = JSON.parse(
+      JSON.stringify(this.scenariosService.scenarios()[this.currentScenario])
+    );
   }
 }

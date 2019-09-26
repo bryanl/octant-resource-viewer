@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   Renderer2,
   SimpleChanges,
@@ -102,7 +101,7 @@ export class CytoscapeComponent implements OnChanges {
 
       this.cy.minZoom(this.zoom.min);
       this.cy.maxZoom(this.zoom.max);
-      this.cy.layout({ ...this.layout, animate: false }).run();
+      this.cy.layout({ ...this.layout, animate: true }).run();
       this.cy.autolock(true);
     }
   }

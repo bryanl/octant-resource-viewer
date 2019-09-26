@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 const colors = {
   ok: '#DFF0D0',
@@ -26,13 +20,12 @@ export class ResourceViewerComponent {
   constructor() {}
 
   @Input() elements: any;
-
   layout = {
     name: 'klay',
     klay: {
       edgeSpacingFactor: 1,
-      spacing: 100,
-      direction: 'UP',
+      spacing: 60,
+      direction: 'LEFT',
     },
   };
 
@@ -40,7 +33,7 @@ export class ResourceViewerComponent {
     {
       selector: 'node[kind != "Pod"]',
       style: {
-        shape: 'rectangle',
+        shape: 'ellipse',
       },
     },
     {
@@ -51,7 +44,7 @@ export class ResourceViewerComponent {
         label: 'data(name)',
         'border-style': 'solid',
         'border-width': 1,
-        padding: 9,
+        padding: 7,
         'text-valign': 'bottom',
         'text-halign': 'center',
         'text-margin-y': 6,
