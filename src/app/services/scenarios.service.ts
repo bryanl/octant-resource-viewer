@@ -15,36 +15,40 @@ export class ScenariosService {
 interface NodeOptions {
   name: string;
   status?: string;
-  apiVersion?: string;
-  kind?: string;
+  apiVersion: string;
+  kind: string;
 
-  podOK?: number;
-  podWarning?: number;
-  podError?: number;
+  podDetails?: {
+    podOK?: number;
+    podWarning?: number;
+    podError?: number;
+  };
 }
 
 const podStatusTypes = ['podOK', 'podWarning', 'podError'];
 
-const node = (id: string, options?: NodeOptions) => {
-  options = options || { name: id };
-  options.status = options.status || 'ok';
-  options.name = options.name || id;
+const node = (id: string, options: NodeOptions) => {
+  let podOptions = {};
+  if (options.podDetails) {
+    let podCount = 0;
+    podStatusTypes.forEach(statusType => {
+      if (options.podDetails[statusType]) {
+        podCount += options.podDetails[statusType];
+      }
+    });
 
-  let podCount = 0;
-  podStatusTypes.forEach(label => {
-    if (options[label]) {
-      podCount += options[label];
-    }
-  });
+    const podStatus = podStatusTypes.reduce((previousValue, currentValue) => {
+      previousValue[`${currentValue}Percentage`] =
+        (options.podDetails[currentValue] / podCount) * 100 || 0;
+      return previousValue;
+    }, {});
+    podOptions = { ...podStatus };
+  }
 
-  const podStatus = podStatusTypes.reduce((previousValue, currentValue) => {
-    previousValue[`${currentValue}Percentage`] =
-      (options[currentValue] / podCount) * 100 || 0;
-    return previousValue;
-  }, {});
+  const label = `${options.name}\n${options.apiVersion} ${options.kind}`;
 
   return {
-    data: { id, ...podStatus, ...options },
+    data: { id, label, ...podOptions, ...options },
   };
 };
 
@@ -61,23 +65,62 @@ const connect = (
 
 const defaultElements = [
   node('deployment', {
+    status: 'ok',
     name: 'deployment',
     apiVersion: 'apps/v1',
     kind: 'Deployment',
   }),
-  node('replica-set-1', { name: 'deployment-1a', status: 'ok' }),
-  node('service'),
+  node('replica-set-1', {
+    apiVersion: 'apps/v1',
+    kind: 'ReplicaSet',
+    name: 'deployment-1a',
+    status: 'ok',
+  }),
+  node('service', {
+    apiVersion: 'v1',
+    kind: 'Service',
+    name: 'service',
+    status: 'ok',
+  }),
   node('pods-1', {
+    status: 'ok',
     name: 'deployment-1a pods',
     kind: 'Pod',
     apiVersion: 'v1',
-    podOK: 5,
+    podDetails: {
+      podOK: 5,
+    },
   }),
-  node('ingress'),
-  node('service-account'),
-  node('node1'),
-  node('node3'),
-  node('node2'),
+  node('ingress', {
+    apiVersion: 'extensions/v1beta1',
+    kind: 'Ingress',
+    name: 'ingress',
+    status: 'ok',
+  }),
+  node('service-account', {
+    apiVersion: 'v1',
+    kind: 'ServiceAccount',
+    name: 'service-account',
+    status: 'ok',
+  }),
+  node('cm1', {
+    apiVersion: 'v1',
+    kind: 'ConfigMap',
+    name: 'cm1',
+    status: 'ok',
+  }),
+  node('cm2', {
+    apiVersion: 'v1',
+    kind: 'ConfigMap',
+    name: 'cm2',
+    status: 'ok',
+  }),
+  node('cm3', {
+    apiVersion: 'v1',
+    kind: 'ConfigMap',
+    name: 'cm3',
+    status: 'ok',
+  }),
   connect(
     'replica-set-1',
     'deployment'
@@ -110,30 +153,72 @@ const someFailuresElements = [
     apiVersion: 'apps/v1',
     kind: 'Deployment',
   }),
-  node('replica-set-1', { name: 'deployment-1a', status: 'ok' }),
-  node('replica-set-2', { name: 'deployment-1b', status: 'ok' }),
-  node('service'),
+  node('replica-set-1', {
+    apiVersion: 'apps/v1',
+    kind: 'ReplicaSet',
+    name: 'deployment-1a',
+    status: 'ok',
+  }),
+  node('replica-set-2', {
+    apiVersion: 'apps/v1',
+    kind: 'ReplicaSet',
+    name: 'deployment-1b',
+    status: 'ok',
+  }),
+  node('service', {
+    apiVersion: 'v1',
+    kind: 'Service',
+    name: 'service',
+    status: 'ok',
+  }),
   node('pods-1', {
     name: 'deployment-1a pods',
     kind: 'Pod',
     apiVersion: 'v1',
-    podOK: 5,
-    podWarning: 2,
-    podError: 1,
+    podDetails: {
+      podOK: 5,
+      podWarning: 2,
+      podError: 1,
+    },
   }),
   node('pods-2', {
     name: 'deployment-1b pods',
     kind: 'Pod',
     apiVersion: 'v1',
-    podOK: 5,
-    podWarning: 2,
-    podError: 1,
+    podDetails: {
+      podWarning: 2,
+    },
   }),
-  node('ingress', { name: 'ingress', status: 'error' }),
-  node('service-account'),
-  node('node1'),
-  node('node3'),
-  node('node2'),
+  node('ingress', {
+    apiVersion: 'extensions/v1beta1',
+    kind: 'Ingress',
+    name: 'ingress',
+    status: 'ok',
+  }),
+  node('service-account', {
+    apiVersion: 'v1',
+    kind: 'ServiceAccount',
+    name: 'service-account',
+    status: 'ok',
+  }),
+  node('cm1', {
+    apiVersion: 'v1',
+    kind: 'ConfigMap',
+    name: 'cm1',
+    status: 'ok',
+  }),
+  node('cm2', {
+    apiVersion: 'v1',
+    kind: 'ConfigMap',
+    name: 'cm2',
+    status: 'ok',
+  }),
+  node('cm3', {
+    apiVersion: 'v1',
+    kind: 'ConfigMap',
+    name: 'cm3',
+    status: 'ok',
+  }),
   connect(
     'replica-set-1',
     'deployment'

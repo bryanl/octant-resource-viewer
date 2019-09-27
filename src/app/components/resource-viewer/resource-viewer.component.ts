@@ -11,19 +11,11 @@ const colors = {
   edge: '#c1cdd4',
 };
 
-// const klayLayout = {
-//   name: 'klay',
-//   klay: {
-//     edgeSpacingFactor: 1,
-//     spacing: 60,
-//     direction: 'LEFT',
-//   },
-// };
-
 const dagreLayout = {
   name: 'dagre',
   rankDir: 'RL',
   ranker: 'network-tree',
+  spacingFactor: 1.1,
 };
 
 @Component({
@@ -49,7 +41,8 @@ export class ResourceViewerComponent {
       style: {
         'font-family': 'Metropolis',
         'font-size': 10,
-        label: 'data(name)',
+        label: 'data(label)',
+        'text-wrap': 'wrap',
         'border-style': 'solid',
         'border-width': 1,
         padding: 7,
@@ -133,7 +126,8 @@ export class ResourceViewerComponent {
           return colors.okBorder;
         },
         'border-width': 1,
-        content: 'data(name)',
+        content: 'data(label)',
+        'text-wrap': 'wrap',
         'pie-size': '150%',
         'pie-1-background-color': colors.ok,
         'pie-1-background-size': 'data(podOKPercentage)',
