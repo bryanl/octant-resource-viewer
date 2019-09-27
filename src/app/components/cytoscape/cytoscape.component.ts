@@ -62,6 +62,11 @@ export class CytoscapeComponent implements OnChanges {
         this.selected.emit(node.data());
       });
 
+      this.cy.on('layoutready', () => {
+        this.cy.fit();
+        this.cy.center();
+      });
+
       this.cy.layout({ ...this.layout, animate: false }).run();
       this.cy.autolock(true);
     } else {
@@ -71,17 +76,9 @@ export class CytoscapeComponent implements OnChanges {
 
         changes.elements.currentValue.forEach(element => {
           const id = element.data.id;
-          if (!id) {
-            console.log(`new item didn't have id`, element);
-          } else {
+          if (id) {
             const prev = this.cy.$id(id);
-
             if (prev.length === 1) {
-              console.log('updating item', {
-                id,
-                prev: prev.data(),
-                cur: element.data,
-              });
               prev.data(element.data);
             } else {
               this.cy.add(element);
