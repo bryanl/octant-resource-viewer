@@ -15,7 +15,7 @@
           <clr-icon shape="caret down"></clr-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-          <button *ngFor="let scenario of scenarios" clrDropdownItem (click)="setScenario(scenario)">{{scenario}}</button>
+          <button *ngFor="let scenario of scenarioNames" clrDropdownItem (click)="setScenario(scenario)">{{scenario}}</button>
         </clr-dropdown-menu>
       </clr-dropdown>
     </div>
@@ -27,7 +27,12 @@
           <app-resource-viewer [elements]="elements"></app-resource-viewer>
         </div>
       </div>
-      <div class="clr-col-3 sidebar">side</div>
+      <div class="clr-col-3 sidebar">
+        <div *ngIf="scenarioSliderOptions" class="scenario-controller">
+          <ng5-slider [(value)]="scenarioStep" [options]="scenarioSliderOptions"></ng5-slider>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
