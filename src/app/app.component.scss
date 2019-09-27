@@ -13,11 +13,6 @@
   justify-content: flex-start;
 }
 
-.controlPanel {
-  flex: 1 1 auto;
-  background-color: goldenrod;
-}
-
 .viewer {
   flex: 1 1 auto;
 }
@@ -26,7 +21,9 @@
   background-color: #eeeeee;
 }
 
-button:focus {outline:0;}
+button:focus {
+  outline: 0;
+}
 
 .scenario-controller {
   margin: 1em 2em
@@ -38,8 +35,9 @@ button:focus {outline:0;}
     background: #ffe4d1;
     height: 2px;
   }
+
   .scenario-slider .ng5-slider .ng5-slider-selection {
-    background: orange;
+    background: rgb(0, 37, 56);
   }
 
   .scenario-slider .ng5-slider .ng5-slider-pointer {
@@ -47,9 +45,10 @@ button:focus {outline:0;}
     height: 16px;
     top: auto; /* to remove the default positioning */
     bottom: 0;
-    background-color: #333;
+    background-color: rgb(0, 37, 56);
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    outline: 0;
   }
 
   .scenario-slider .ng5-slider .ng5-slider-pointer:after {
@@ -62,7 +61,7 @@ button:focus {outline:0;}
 
   .scenario-slider .ng5-slider .ng5-slider-limit {
     font-weight: bold;
-    color: orange;
+    color: rgb(0, 37, 56);
   }
 
   .scenario-slider .ng5-slider .ng5-slider-tick {
@@ -75,6 +74,6 @@ button:focus {outline:0;}
   }
 
   .scenario-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
-    background: orange;
+    background: rgb(0, 37, 56);
   }
 }

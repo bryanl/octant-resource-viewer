@@ -196,6 +196,12 @@ const defaultElements: Element[] = [
     name: 'cm3',
     status: 'ok',
   }),
+  node('cm4', {
+    apiVersion: 'v1',
+    kind: 'ConfigMap',
+    name: 'cm4',
+    status: 'ok',
+  }),
   connect(
     'replica-set-1',
     'deployment'
