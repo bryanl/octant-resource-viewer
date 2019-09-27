@@ -60,9 +60,9 @@ export class CytoscapeComponent implements OnChanges {
       this.cy.on('tap', 'node', e => {
         const node: SingularData = e.target;
         this.selected.emit(node.data());
-        console.log(`tap`, node.data());
       });
 
+      this.cy.layout({ ...this.layout, animate: false }).run();
       this.cy.autolock(true);
     } else {
       this.cy.autolock(false);

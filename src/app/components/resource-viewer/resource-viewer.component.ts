@@ -11,6 +11,21 @@ const colors = {
   edge: '#c1cdd4',
 };
 
+// const klayLayout = {
+//   name: 'klay',
+//   klay: {
+//     edgeSpacingFactor: 1,
+//     spacing: 60,
+//     direction: 'LEFT',
+//   },
+// };
+
+const dagreLayout = {
+  name: 'dagre',
+  rankDir: 'BT',
+  ranker: 'network-tree',
+};
+
 @Component({
   selector: 'app-resource-viewer',
   templateUrl: './resource-viewer.component.html',
@@ -20,17 +35,7 @@ export class ResourceViewerComponent {
   constructor() {}
 
   @Input() elements: any;
-  layout = {
-    name: 'dagre',
-    rankDir: 'RL',
-    fit: true,
-    // name: 'klay',
-    // klay: {
-    //   edgeSpacingFactor: 1,
-    //   spacing: 60,
-    //   direction: 'LEFT',
-    // },
-  };
+  layout = dagreLayout;
 
   style = [
     {
