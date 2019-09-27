@@ -10,6 +10,14 @@
     </div>
   </header>
   <div class="container">
+    <div class="viewer clr-row">
+      <div class="clr-col-9">
+        <div class="view-container">
+          <app-resource-viewer [elements]="elements"></app-resource-viewer>
+        </div>
+      </div>
+      <div class="clr-col-3 sidebar">side</div>
+    </div>
     <div class="controlPanel clr-row">
       <div class="clr-col-12">
         <form clrForm>
@@ -23,14 +31,5 @@
         </form>
       </div>
     </div>
-    <div class="viewer clr-row">
-      <div class="clr-col-9">
-        <div class="view-container">
-          <app-resource-viewer [elements]="elements"></app-resource-viewer>
-        </div>
-      </div>
-      <div class="clr-col-3 sidebar">side</div>
-    </div>
-
   </div>
 </div>

@@ -11,7 +11,9 @@ import {
 } from '@angular/core';
 import cytoscape, { SingularData, Stylesheet } from 'cytoscape';
 import klay from 'cytoscape-klay';
+import dagre from 'cytoscape-dagre';
 
+cytoscape.use(dagre);
 cytoscape.use(klay);
 
 @Component({
@@ -61,46 +63,44 @@ export class CytoscapeComponent implements OnChanges {
         console.log(`tap`, node.data());
       });
 
-      this.cy.layout({ ...this.layout, animate: false }).run();
       this.cy.autolock(true);
     } else {
-      console.log('???', changes);
-
       this.cy.autolock(false);
+      this.cy.batch(() => {
+        const tracker: { [key: string]: boolean } = {};
 
-      const tracker: { [key: string]: boolean } = {};
-
-      changes.elements.currentValue.forEach(element => {
-        const id = element.data.id;
-        if (!id) {
-          console.log(`new item didn't have id`, element);
-        } else {
-          const prev = this.cy.$id(id);
-
-          if (prev.length === 1) {
-            console.log('updating item', {
-              id,
-              prev: prev.data(),
-              cur: element.data,
-            });
-            prev.data(element.data);
+        changes.elements.currentValue.forEach(element => {
+          const id = element.data.id;
+          if (!id) {
+            console.log(`new item didn't have id`, element);
           } else {
-            this.cy.add(element);
+            const prev = this.cy.$id(id);
+
+            if (prev.length === 1) {
+              console.log('updating item', {
+                id,
+                prev: prev.data(),
+                cur: element.data,
+              });
+              prev.data(element.data);
+            } else {
+              this.cy.add(element);
+            }
           }
-        }
 
-        tracker[id] = true;
+          tracker[id] = true;
+        });
+
+        this.cy.elements('*').forEach(element => {
+          const id = element.id();
+          if (!tracker[id]) {
+            this.cy.remove(element);
+          }
+        });
+
+        this.cy.minZoom(this.zoom.min);
+        this.cy.maxZoom(this.zoom.max);
       });
-
-      this.cy.elements('*').forEach(element => {
-        const id = element.id();
-        if (!tracker[id]) {
-          this.cy.remove(element);
-        }
-      });
-
-      this.cy.minZoom(this.zoom.min);
-      this.cy.maxZoom(this.zoom.max);
       this.cy.layout({ ...this.layout, animate: true }).run();
       this.cy.autolock(true);
     }

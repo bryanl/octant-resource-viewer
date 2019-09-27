@@ -21,12 +21,15 @@ export class ResourceViewerComponent {
 
   @Input() elements: any;
   layout = {
-    name: 'klay',
-    klay: {
-      edgeSpacingFactor: 1,
-      spacing: 60,
-      direction: 'LEFT',
-    },
+    name: 'dagre',
+    rankDir: 'RL',
+    fit: true,
+    // name: 'klay',
+    // klay: {
+    //   edgeSpacingFactor: 1,
+    //   spacing: 60,
+    //   direction: 'LEFT',
+    // },
   };
 
   style = [
