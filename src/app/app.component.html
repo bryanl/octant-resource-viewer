@@ -2,11 +2,22 @@
   <header class="header header-6">
     <div class="branding">
       <a href="/" class="nav-link">
-        <clr-icon shape="home" size="16" class="is-inverse"></clr-icon>
+        <clr-icon shape="home" [attr.size]="16" class="is-inverse"></clr-icon>
         <span class="title">
           Resource Viewer Tool
         </span>
       </a>
+    </div>
+    <div class="header-actions">
+      <clr-dropdown>
+        <button class="nav-text" clrDropdownTrigger>
+          <span>Scenarios</span>
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <button *ngFor="let scenario of scenarios" clrDropdownItem (click)="setScenario(scenario)">{{scenario}}</button>
+        </clr-dropdown-menu>
+      </clr-dropdown>
     </div>
   </header>
   <div class="container">
@@ -17,19 +28,6 @@
         </div>
       </div>
       <div class="clr-col-3 sidebar">side</div>
-    </div>
-    <div class="controlPanel clr-row">
-      <div class="clr-col-12">
-        <form clrForm>
-          <clr-select-container>
-            <label for="scenario">Current Scenario</label>
-            <select (ngModelChange)="setScenario($event)" [ngModel]="currentScenario" clrSelect
-                    name="scenario">
-              <option *ngFor="let scenario of scenarios" [value]="scenario">{{scenario}}</option>
-            </select>
-          </clr-select-container>
-        </form>
-      </div>
     </div>
   </div>
 </div>
