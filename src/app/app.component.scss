@@ -25,3 +25,56 @@
 .sidebar {
   background-color: #eeeeee;
 }
+
+button:focus {outline:0;}
+
+.scenario-controller {
+  margin: 1em 2em
+}
+
+
+::ng-deep {
+  .scenario-slider .ng5-slider .ng5-slider-bar {
+    background: #ffe4d1;
+    height: 2px;
+  }
+  .scenario-slider .ng5-slider .ng5-slider-selection {
+    background: orange;
+  }
+
+  .scenario-slider .ng5-slider .ng5-slider-pointer {
+    width: 8px;
+    height: 16px;
+    top: auto; /* to remove the default positioning */
+    bottom: 0;
+    background-color: #333;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+
+  .scenario-slider .ng5-slider .ng5-slider-pointer:after {
+    display: none;
+  }
+
+  .scenario-slider .ng5-slider .ng5-slider-bubble {
+    bottom: 14px;
+  }
+
+  .scenario-slider .ng5-slider .ng5-slider-limit {
+    font-weight: bold;
+    color: orange;
+  }
+
+  .scenario-slider .ng5-slider .ng5-slider-tick {
+    width: 1px;
+    height: 10px;
+    margin-left: 4px;
+    border-radius: 0;
+    background: #ffe4d1;
+    top: -1px;
+  }
+
+  .scenario-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
+    background: orange;
+  }
+}

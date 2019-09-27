@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  Scenario,
-  ScenariosService,
-  ScenarioStep,
-} from './services/scenarios.service';
-import { Options } from 'ng5-slider';
+import { ScenariosService, ScenarioStep } from './services/scenarios.service';
+import { ChangeContext, Options } from 'ng5-slider';
 
 @Component({
   selector: 'app-root',
@@ -17,9 +13,12 @@ export class AppComponent implements OnInit {
 
   scenarioStep: number;
   scenarioSliderOptions: Options;
+  currentStepName: string;
+  scenarioPlaying: boolean;
 
   private scenarios: {};
   private playID: number;
+  private currentScenario: any;
 
   constructor(private scenariosService: ScenariosService) {}
 
@@ -39,36 +38,66 @@ export class AppComponent implements OnInit {
   }
 
   setScenario(name: string) {
-    console.log(`set scenario to ${name}`, now());
-    const scenario = this.scenarios[name];
+    this.currentScenario = this.scenarios[name];
 
-    const play = (steps: ScenarioStep[], index = 0) => {
+    this.playScenario(-1);
+  }
+
+  private playScenario(endStep: number, ignoreDuration = false) {
+    const play = (steps: ScenarioStep[], index: number, playUntil = -1) => {
       if (steps.length === 0) {
+        this.scenarioPlaying = false;
         return;
       }
 
+      this.scenarioPlaying = true;
+
       const step = steps.shift();
-      console.log(`running step`, step.name, index, now());
+      const timeout = ignoreDuration
+        ? 0 // ignore supplied duration due to request
+        : steps.length === 0
+        ? 0 // ignore supplied duration because this is the last step
+        : step.duration; // use supplied duration
+
+      this.currentStepName = step.name;
       this.elements = JSON.parse(JSON.stringify(step.elements));
-      this.scenarioStep = index;
-      this.playID = setTimeout(() => {
-        console.log(`ding`, now());
-        play(steps, index + 1);
-      });
+
+      if (!ignoreDuration) {
+        this.scenarioStep = index;
+      }
+
+      if (playUntil === index) {
+        this.scenarioPlaying = false;
+        this.scenarioStep = index;
+      } else {
+        this.playID = setTimeout(() => {
+          play(steps, index + 1, playUntil);
+        }, timeout);
+      }
     };
 
     clearTimeout(this.playID);
 
     this.scenarioSliderOptions = undefined;
-    this.scenarioStep = 0;
+
+    const scenario = this.currentScenario;
+
     if (scenario.steps.length > 1) {
       this.scenarioSliderOptions = {
         floor: 0,
         ceil: scenario.steps.length - 1,
+        showTicks: true,
+        translate: (value: number): string => {
+          return `${value + 1}`;
+        },
       };
     }
-    play(scenario.steps);
+    play(scenario.steps.concat(), 0, endStep);
+  }
+
+  scenarioStepChanged(changeContext: ChangeContext) {
+    if (!this.scenarioPlaying) {
+      this.playScenario(changeContext.value, true);
+    }
   }
 }
-
-const now = (): string => new Date().toISOString();

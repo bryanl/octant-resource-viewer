@@ -24,6 +24,31 @@ export class ScenariosService {
           },
           duration: 5000,
         },
+        {
+          name: 'Ingress recovers',
+          action: multiAction,
+          options: {
+            actions: [
+              {
+                action: addEdge,
+                options: {
+                  source: 'ingress',
+                  target: 'service',
+                  connectionType: 'implicit',
+                },
+              },
+              {
+                action: setNodeStatus,
+                options: { id: 'ingress', status: 'error' },
+              },
+              {
+                action: setNodeStatus,
+                options: { id: 'ingress', status: 'ok' },
+              },
+            ],
+          },
+          duration: 5000,
+        },
       ]),
     ];
   };
@@ -196,117 +221,6 @@ const defaultElements: Element[] = [
   ),
 ];
 
-const someFailuresElements = [
-  node('deployment', {
-    name: 'deployment',
-    status: 'warning',
-    apiVersion: 'apps/v1',
-    kind: 'Deployment',
-  }),
-  node('replica-set-1', {
-    apiVersion: 'apps/v1',
-    kind: 'ReplicaSet',
-    name: 'deployment-1a',
-    status: 'ok',
-  }),
-  node('replica-set-2', {
-    apiVersion: 'apps/v1',
-    kind: 'ReplicaSet',
-    name: 'deployment-1b',
-    status: 'ok',
-  }),
-  node('service', {
-    apiVersion: 'v1',
-    kind: 'Service',
-    name: 'service',
-    status: 'ok',
-  }),
-  node('pods-1', {
-    name: 'deployment-1a pods',
-    kind: 'Pod',
-    apiVersion: 'v1',
-    podDetails: {
-      podOK: 5,
-      podWarning: 2,
-      podError: 1,
-    },
-  }),
-  node('pods-2', {
-    name: 'deployment-1b pods',
-    kind: 'Pod',
-    apiVersion: 'v1',
-    podDetails: {
-      podWarning: 2,
-    },
-  }),
-  node('ingress', {
-    apiVersion: 'extensions/v1beta1',
-    kind: 'Ingress',
-    name: 'ingress',
-    status: 'ok',
-  }),
-  node('service-account', {
-    apiVersion: 'v1',
-    kind: 'ServiceAccount',
-    name: 'service-account',
-    status: 'ok',
-  }),
-  node('cm1', {
-    apiVersion: 'v1',
-    kind: 'ConfigMap',
-    name: 'cm1',
-    status: 'ok',
-  }),
-  node('cm2', {
-    apiVersion: 'v1',
-    kind: 'ConfigMap',
-    name: 'cm2',
-    status: 'ok',
-  }),
-  node('cm3', {
-    apiVersion: 'v1',
-    kind: 'ConfigMap',
-    name: 'cm3',
-    status: 'ok',
-  }),
-  connect(
-    'replica-set-1',
-    'deployment'
-  ),
-  connect(
-    'replica-set-2',
-    'deployment'
-  ),
-  connect(
-    'pods-1',
-    'replica-set-1'
-  ),
-  connect(
-    'pods-2',
-    'replica-set-2'
-  ),
-  connect(
-    'service',
-    'pods-1',
-    'implicit'
-  ),
-  connect(
-    'ingress',
-    'service',
-    'implicit'
-  ),
-  connect(
-    'pods-1',
-    'service-account',
-    'field'
-  ),
-  connect(
-    'pods-2',
-    'service-account',
-    'field'
-  ),
-];
-
 type MutationAction = (
   elements: any,
   name: string,
@@ -338,7 +252,9 @@ const scenarioFactory = (name: string, mutations: Mutation[]): Scenario => {
   };
 
   mutations.forEach(mutation => {
-    const elements = scenario.steps[scenario.steps.length - 1].elements;
+    const elements = JSON.parse(
+      JSON.stringify(scenario.steps[scenario.steps.length - 1].elements)
+    );
     const step = mutation.action(
       elements,
       mutation.name,
@@ -359,15 +275,36 @@ const removeEdge: MutationAction = (
 ): ScenarioStep => {
   const filtered = elements.filter(element => {
     if (element.type === 'edge') {
-      return element.data.id === options.id;
+      return element.data.id !== options.id;
     }
-    return false;
+    return true;
   });
 
   return {
     name,
     duration,
     elements: filtered,
+  };
+};
+
+const addEdge: MutationAction = (
+  elements: Element[],
+  name: string,
+  options: { [key: string]: any },
+  duration: number
+): ScenarioStep => {
+  elements.push(
+    connect(
+      options.source,
+      options.target,
+      options.connectionType
+    )
+  );
+
+  return {
+    name,
+    duration,
+    elements,
   };
 };
 
@@ -384,6 +321,8 @@ const setNodeStatus: MutationAction = (
       const el = element as Node;
       el.data.status = options.status;
       return el;
+    } else {
+      return element;
     }
   });
 
@@ -404,6 +343,7 @@ const multiAction: MutationAction = (
     action: MutationAction;
     options: MutationOption;
   }[];
+
   const newElements = actions.reduce((prev, cur) => {
     const step = cur.action(prev, 'temp', cur.options, 0);
     return step.elements;
