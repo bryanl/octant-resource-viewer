@@ -22,7 +22,7 @@ const colors = {
 
 const dagreLayout = {
   name: 'dagre',
-  rankDir: 'BT',
+  rankDir: 'RL',
   ranker: 'network-tree',
 };
 

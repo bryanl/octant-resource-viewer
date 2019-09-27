@@ -6,12 +6,10 @@ import { Injectable } from '@angular/core';
 export class ScenariosService {
   constructor() {}
 
-  scenarios() {
-    return {
-      default: defaultElements.concat(),
-      'some failures': someFailuresElements.concat(),
-    };
-  }
+  scenarios = () => ({
+    default: defaultElements.concat(),
+    'some failures': someFailuresElements.concat(),
+  });
 }
 
 interface NodeOptions {
