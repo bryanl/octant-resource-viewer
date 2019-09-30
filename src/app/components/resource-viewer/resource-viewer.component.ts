@@ -6,7 +6,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { Element } from '../../services/elements';
+import { ViewerElement } from '../../services/elements';
 
 const colors = {
   ok: '#DFF0D0',
@@ -36,10 +36,10 @@ const dagreLayout = {
 export class ResourceViewerComponent implements OnChanges {
   constructor() {}
 
-  @Input() elements: Element[] = [];
+  @Input() elements: ViewerElement[] = [];
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
 
-  currentElements: Element[] = [];
+  currentElements: ViewerElement[] = [];
 
   layout = dagreLayout;
 
@@ -176,7 +176,7 @@ export class ResourceViewerComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.elements.currentValue) {
-      const cur = changes.elements.currentValue as Element[];
+      const cur = changes.elements.currentValue as ViewerElement[];
 
       if (cur.length > 0 && cur.filter(e => e.selected).length < 1) {
         // select an element if non are selected

@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { connect, defaultElements, Element, node, Node } from './elements';
+import {
+  connect,
+  defaultElements,
+  ViewerElement,
+  node,
+  ViewerNode,
+} from './elements';
 
 @Injectable({
   providedIn: 'root',
@@ -78,7 +84,7 @@ export interface Scenario {
 export interface ScenarioStep {
   name: string;
   duration: number;
-  elements: Element[];
+  elements: ViewerElement[];
 }
 
 type MutationAction = (
@@ -128,7 +134,7 @@ const scenarioFactory = (name: string, mutations: Mutation[]): Scenario => {
 };
 
 const removeEdge: MutationAction = (
-  elements: Element[],
+  elements: ViewerElement[],
   name: string,
   options: { [key: string]: any },
   duration: number
@@ -148,7 +154,7 @@ const removeEdge: MutationAction = (
 };
 
 const addEdge: MutationAction = (
-  elements: Element[],
+  elements: ViewerElement[],
   name: string,
   options: { [key: string]: any },
   duration: number
@@ -169,7 +175,7 @@ const addEdge: MutationAction = (
 };
 
 const setPodDetails: MutationAction = (
-  elements: Element[],
+  elements: ViewerElement[],
   name: string,
   options: MutationOption,
   duration: number
@@ -178,7 +184,7 @@ const setPodDetails: MutationAction = (
     if (element.type !== 'node') {
       return element;
     } else if (element.data.id === options.id) {
-      const el = element as Node;
+      const el = element as ViewerNode;
       el.data.podDetails = options.podDetails;
       const n = node(el.data.id, el.data);
       return n;
@@ -195,7 +201,7 @@ const setPodDetails: MutationAction = (
 };
 
 const setNodeStatus: MutationAction = (
-  elements: Element[],
+  elements: ViewerElement[],
   name: string,
   options: MutationOption,
   duration: number
@@ -204,7 +210,7 @@ const setNodeStatus: MutationAction = (
     if (element.type !== 'node') {
       return element;
     } else if (element.data.id === options.id) {
-      const el = element as Node;
+      const el = element as ViewerNode;
       el.data.status = options.status;
       return el;
     } else {
@@ -220,7 +226,7 @@ const setNodeStatus: MutationAction = (
 };
 
 const multiAction: MutationAction = (
-  elements: Element[],
+  elements: ViewerElement[],
   name: string,
   options: MutationOption,
   duration: number

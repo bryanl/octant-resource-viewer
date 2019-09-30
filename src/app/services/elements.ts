@@ -1,4 +1,4 @@
-export interface Node {
+export interface ViewerNode {
   type: string;
   data: {
     apiVersion: string;
@@ -13,13 +13,13 @@ export interface Node {
   selected?: boolean;
 }
 
-export interface Edge {
+export interface ViewerEdge {
   type: string;
   data: { id: string; source: string; connectionType: string; target: string };
   selected: false;
 }
 
-export type Element = Node | Edge;
+export type ViewerElement = ViewerNode | ViewerEdge;
 
 export interface PodDetails {
   podOK?: number;
@@ -27,7 +27,7 @@ export interface PodDetails {
   podError?: number;
 }
 
-export interface NodeOptions {
+export interface ViewerNodeOptions {
   name: string;
   status?: string;
   apiVersion: string;
@@ -47,7 +47,7 @@ const podStatusTypes: PodStatus[] = [
   PodStatus.Error,
 ];
 
-function calculatePodPercentages(options: NodeOptions) {
+function calculatePodPercentages(options: ViewerNodeOptions) {
   let podOptions = {};
   if (options.podDetails) {
     let podCount = 0;
@@ -67,7 +67,7 @@ function calculatePodPercentages(options: NodeOptions) {
   return podOptions;
 }
 
-export const node = (id: string, options: NodeOptions): Node => {
+export const node = (id: string, options: ViewerNodeOptions): ViewerNode => {
   const label = `${options.name}\n${options.apiVersion} ${options.kind}`;
 
   return {
@@ -80,7 +80,7 @@ export const connect = (
   source: string,
   target: string,
   connectionType = 'explicit'
-): Edge => {
+): ViewerEdge => {
   const id = `${source}-${target}`;
   return {
     type: 'edge',
@@ -89,7 +89,7 @@ export const connect = (
   };
 };
 
-export const defaultElements: Element[] = [
+export const defaultElements: ViewerElement[] = [
   node('deployment', {
     status: 'ok',
     name: 'deployment',

@@ -30,26 +30,7 @@
       </div>
       <div class="clr-col-3 sidebar">
         <app-scenarios (elements)="setElements($event)" [scenario]="currentScenario"></app-scenarios>
-        <div class="card">
-          <div class="card-block">
-            <clr-tabs>
-              <clr-tab>
-                <button clrTabLink>Tab 1</button>
-                <clr-tab-content>
-                  {{ selected | json}}
-                </clr-tab-content>
-              </clr-tab>
-              <clr-tab>
-                <button clrTabLink>
-                  <clr-icon shape="bell" class="is-solid has-badge--error"></clr-icon>
-                  Issues
-                </button>
-                <clr-tab-content>tab 1 content</clr-tab-content>
-              </clr-tab>
-            </clr-tabs>
-          </div>
-        </div>
-
+        <app-object-status [node]="selected"></app-object-status>
       </div>
     </div>
   </div>

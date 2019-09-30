@@ -12,7 +12,7 @@ import {
 import cytoscape, { SingularData, Stylesheet } from 'cytoscape';
 import klay from 'cytoscape-klay';
 import dagre from 'cytoscape-dagre';
-import { Element } from '../../services/elements';
+import { ViewerElement } from '../../services/elements';
 
 cytoscape.use(dagre);
 cytoscape.use(klay);
@@ -24,7 +24,7 @@ cytoscape.use(klay);
 })
 export class CytoscapeComponent implements OnChanges {
   @ViewChild('cy', { static: true }) private el: ElementRef;
-  @Input() public elements: Element[];
+  @Input() public elements: ViewerElement[];
   @Input() public style: Stylesheet[];
   @Input() public layout: any;
   @Input() public zoom: any;

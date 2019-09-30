@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ResourceViewerComponent } from './components/resource-viewer/resource-viewer.component';
 import { Ng5SliderModule } from 'ng5-slider';
 import { ScenariosComponent } from './components/scenarios/scenarios.component';
+import { ObjectStatusComponent } from './components/object-status/object-status.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ScenariosComponent } from './components/scenarios/scenarios.component';
     CytoscapeComponent,
     ResourceViewerComponent,
     ScenariosComponent,
+    ObjectStatusComponent,
   ],
   imports: [
     BrowserModule,
