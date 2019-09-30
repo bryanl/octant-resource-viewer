@@ -9,9 +9,15 @@ import { CytoscapeComponent } from './components/cytoscape/cytoscape.component';
 import { FormsModule } from '@angular/forms';
 import { ResourceViewerComponent } from './components/resource-viewer/resource-viewer.component';
 import { Ng5SliderModule } from 'ng5-slider';
+import { ScenariosComponent } from './components/scenarios/scenarios.component';
 
 @NgModule({
-  declarations: [AppComponent, CytoscapeComponent, ResourceViewerComponent],
+  declarations: [
+    AppComponent,
+    CytoscapeComponent,
+    ResourceViewerComponent,
+    ScenariosComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

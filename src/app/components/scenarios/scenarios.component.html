@@ -1,0 +1,10 @@
+<div class="card" *ngIf="scenarioSliderOptions">
+  <div class="card-block">
+    <div class="progress top loop" *ngIf="scenarioPlaying"></div>
+    <div class="card-title">Current step: {{currentStepName}}</div>
+  </div>
+  <div class="scenario-controller scenario-slider">
+    <ng5-slider [(value)]="scenarioStep" [options]="scenarioSliderOptions"
+                (userChangeEnd)="scenarioStepChanged($event)"></ng5-slider>
+  </div>
+</div>

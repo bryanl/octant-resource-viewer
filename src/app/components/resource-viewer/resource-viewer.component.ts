@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 const colors = {
   ok: '#DFF0D0',
@@ -22,11 +22,12 @@ const dagreLayout = {
   selector: 'app-resource-viewer',
   templateUrl: './resource-viewer.component.html',
   styleUrls: ['./resource-viewer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResourceViewerComponent {
   constructor() {}
 
-  @Input() elements: any;
+  @Input() elements: any = [];
   layout = dagreLayout;
 
   style = [
