@@ -39,8 +39,7 @@ export class AppComponent implements OnInit {
 
   setScenario(name: string) {
     this.currentScenario = this.scenarios[name];
-
-    this.playScenario(-1);
+    this.playScenario(0);
   }
 
   private playScenario(endStep: number, ignoreDuration = false) {

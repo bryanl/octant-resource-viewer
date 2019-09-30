@@ -143,4 +143,8 @@ export class ResourceViewerComponent {
     min: 0.5,
     max: 1.5,
   };
+
+  nodeSelected = event => {
+    console.log('selected', event);
+  };
 }
