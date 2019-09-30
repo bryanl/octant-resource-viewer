@@ -9,11 +9,14 @@ export interface Node {
     label: string;
     status?: string;
   };
+
+  selected?: boolean;
 }
 
 export interface Edge {
   type: string;
   data: { id: string; source: string; connectionType: string; target: string };
+  selected: false;
 }
 
 export type Element = Node | Edge;
@@ -44,7 +47,7 @@ const podStatusTypes: PodStatus[] = [
   PodStatus.Error,
 ];
 
-export const node = (id: string, options: NodeOptions): Node => {
+function calculatePodPercentages(options: NodeOptions) {
   let podOptions = {};
   if (options.podDetails) {
     let podCount = 0;
@@ -59,14 +62,17 @@ export const node = (id: string, options: NodeOptions): Node => {
         (options.podDetails[currentValue] / podCount) * 100 || 0;
       return previousValue;
     }, {});
-    podOptions = { ...podStatus };
+    podOptions = { ...podOptions, ...podStatus };
   }
+  return podOptions;
+}
 
+export const node = (id: string, options: NodeOptions): Node => {
   const label = `${options.name}\n${options.apiVersion} ${options.kind}`;
 
   return {
     type: 'node',
-    data: { id, label, ...options, ...podOptions },
+    data: { id, label, ...options, ...calculatePodPercentages(options) },
   };
 };
 
@@ -79,6 +85,7 @@ export const connect = (
   return {
     type: 'edge',
     data: { id, source, target, connectionType },
+    selected: false,
   };
 };
 

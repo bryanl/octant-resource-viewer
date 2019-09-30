@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { Element } from '../../services/elements';
 
 const colors = {
   ok: '#DFF0D0',
@@ -11,6 +19,8 @@ const colors = {
   edge: '#c1cdd4',
 };
 
+const selectedBorderWidth = 2;
+
 const dagreLayout = {
   name: 'dagre',
   rankDir: 'RL',
@@ -22,12 +32,15 @@ const dagreLayout = {
   selector: 'app-resource-viewer',
   templateUrl: './resource-viewer.component.html',
   styleUrls: ['./resource-viewer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResourceViewerComponent {
+export class ResourceViewerComponent implements OnChanges {
   constructor() {}
 
-  @Input() elements: any = [];
+  @Input() elements: Element[] = [];
+  @Output() selected: EventEmitter<any> = new EventEmitter<any>();
+
+  currentElements: Element[] = [];
+
   layout = dagreLayout;
 
   style = [
@@ -50,6 +63,12 @@ export class ResourceViewerComponent {
         'text-valign': 'bottom',
         'text-halign': 'center',
         'text-margin-y': 6,
+      },
+    },
+    {
+      selector: 'node:selected',
+      style: {
+        'border-width': selectedBorderWidth,
       },
     },
     {
@@ -138,6 +157,12 @@ export class ResourceViewerComponent {
         'pie-3-background-size': 'data(podErrorPercentage)',
       },
     },
+    {
+      selector: 'node[kind = "Pod"][apiVersion = "v1"]:selected',
+      style: {
+        'border-width': selectedBorderWidth,
+      },
+    },
   ];
 
   zoom = {
@@ -146,6 +171,18 @@ export class ResourceViewerComponent {
   };
 
   nodeSelected = event => {
-    console.log('selected', event);
+    this.selected.emit(event);
   };
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.elements.currentValue) {
+      const cur = changes.elements.currentValue as Element[];
+
+      if (cur.length > 0 && cur.filter(e => e.selected).length < 1) {
+        // select an element if non are selected
+        cur[0].selected = true;
+      }
+      this.currentElements = cur;
+    }
+  }
 }

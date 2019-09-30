@@ -12,6 +12,7 @@ import {
 import cytoscape, { SingularData, Stylesheet } from 'cytoscape';
 import klay from 'cytoscape-klay';
 import dagre from 'cytoscape-dagre';
+import { Element } from '../../services/elements';
 
 cytoscape.use(dagre);
 cytoscape.use(klay);
@@ -23,7 +24,7 @@ cytoscape.use(klay);
 })
 export class CytoscapeComponent implements OnChanges {
   @ViewChild('cy', { static: true }) private el: ElementRef;
-  @Input() public elements: [];
+  @Input() public elements: Element[];
   @Input() public style: Stylesheet[];
   @Input() public layout: any;
   @Input() public zoom: any;
@@ -57,8 +58,18 @@ export class CytoscapeComponent implements OnChanges {
         elements: this.elements,
       });
 
+      // emit for selected node
+      this.elements
+        .filter(e => e.selected)
+        .forEach(e => this.selected.emit(e.data));
+
       this.cy.on('tap', 'node', e => {
+        // @ts-ignore
+        this.cy.$('*').json({ selected: false });
+
         const node: SingularData = e.target;
+        // @ts-ignore
+        node.json({ selected: true });
         this.selected.emit(node.data());
       });
 

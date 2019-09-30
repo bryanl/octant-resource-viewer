@@ -5,6 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ScenariosService } from './services/scenarios.service';
+import { Node } from './services/elements';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { ScenariosService } from './services/scenarios.service';
 export class AppComponent implements OnInit {
   scenarioNames: string[];
   elements: any = [];
+  selected: Node;
 
   private scenarios: {};
   private currentScenario: any;
@@ -47,4 +49,8 @@ export class AppComponent implements OnInit {
     this.elements = elements;
     this.cd.detectChanges();
   }
+
+  nodeSelected = (node: Node) => {
+    this.selected = node;
+  };
 }
