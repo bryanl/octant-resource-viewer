@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ScenariosService } from './services/scenarios.service';
-import { ViewerNode } from './services/elements';
+import { ViewerNode, ViewerNodeData } from './services/elements';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ import { ViewerNode } from './services/elements';
 export class AppComponent implements OnInit {
   scenarioNames: string[];
   elements: any = [];
-  selected: ViewerNode;
+  selected: ViewerNodeData;
 
   private scenarios: {};
   private currentScenario: any;
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
     this.cd.detectChanges();
   }
 
-  nodeSelected = (node: ViewerNode) => {
-    this.selected = node;
+  nodeSelected = (data: ViewerNodeData) => {
+    this.selected = data;
   };
 }

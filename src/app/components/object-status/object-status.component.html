@@ -2,9 +2,9 @@
   <div class="card-block">
     <clr-tabs>
       <clr-tab>
-        <button clrTabLink>Tab 1</button>
+        <button clrTabLink>{{nodeData?.name}}</button>
         <clr-tab-content>
-          {{ node | json}}
+          {{ nodeData | json}}
         </clr-tab-content>
       </clr-tab>
       <clr-tab>

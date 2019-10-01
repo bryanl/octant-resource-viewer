@@ -1,15 +1,16 @@
+export interface ViewerNodeData {
+  apiVersion: string;
+  kind: string;
+  name: string;
+  podDetails?: { podOK?: number; podWarning?: number; podError?: number };
+  id: string;
+  label: string;
+  status?: string;
+}
+
 export interface ViewerNode {
   type: string;
-  data: {
-    apiVersion: string;
-    kind: string;
-    name: string;
-    podDetails?: { podOK?: number; podWarning?: number; podError?: number };
-    id: string;
-    label: string;
-    status?: string;
-  };
-
+  data: ViewerNodeData;
   selected?: boolean;
 }
 
