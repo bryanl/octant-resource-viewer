@@ -138,9 +138,9 @@ export class ResourceViewerComponent implements OnChanges {
         'background-color': 'white',
         'border-color': el => {
           const data = el.data();
-          if (data.podErrorPercentage > 0) {
+          if (data.errorPercentage > 0) {
             return colors.errorBorder;
-          } else if (data.podWarningPercentage > 0) {
+          } else if (data.warningPercentage > 0) {
             return colors.warningBorder;
           }
           return colors.okBorder;
@@ -150,11 +150,11 @@ export class ResourceViewerComponent implements OnChanges {
         'text-wrap': 'wrap',
         'pie-size': '150%',
         'pie-1-background-color': colors.ok,
-        'pie-1-background-size': 'data(podOKPercentage)',
+        'pie-1-background-size': 'data(okPercentage)',
         'pie-2-background-color': colors.warning,
-        'pie-2-background-size': 'data(podWarningPercentage)',
+        'pie-2-background-size': 'data(warningPercentage)',
         'pie-3-background-color': colors.error,
-        'pie-3-background-size': 'data(podErrorPercentage)',
+        'pie-3-background-size': 'data(errorPercentage)',
       },
     },
     {

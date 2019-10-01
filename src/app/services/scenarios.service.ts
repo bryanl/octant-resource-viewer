@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   connect,
   defaultElements,
-  ViewerElement,
   node,
+  ViewerElement,
   ViewerNode,
 } from './elements';
 
@@ -24,9 +24,13 @@ export class ScenariosService {
           options: {
             id: 'pods-1',
             podDetails: {
-              podOK: 3,
-              podWarning: 1,
-              podError: 1,
+              pods: [
+                { name: 'pod-1', status: 'ok' },
+                { name: 'pod-2', status: 'ok' },
+                { name: 'pod-3', status: 'warning' },
+                { name: 'pod-4', status: 'warning' },
+                { name: 'pod-5', status: 'error' },
+              ],
             },
           },
         },
@@ -185,9 +189,12 @@ const setPodDetails: MutationAction = (
       return element;
     } else if (element.data.id === options.id) {
       const el = element as ViewerNode;
+      if (!options.podDetails) {
+        return element;
+      }
+
       el.data.podDetails = options.podDetails;
-      const n = node(el.data.id, el.data);
-      return n;
+      return node(el.data.id, el.data);
     } else {
       return element;
     }

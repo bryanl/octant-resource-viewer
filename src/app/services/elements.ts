@@ -2,10 +2,19 @@ export interface ViewerNodeData {
   apiVersion: string;
   kind: string;
   name: string;
-  podDetails?: { podOK?: number; podWarning?: number; podError?: number };
+  podDetails?: PodDetails;
   id: string;
   label: string;
   status?: string;
+}
+
+export interface PodDetails {
+  pods: PodData[];
+}
+
+export interface PodData {
+  name: string;
+  status: string;
 }
 
 export interface ViewerNode {
@@ -38,32 +47,35 @@ export interface ViewerNodeOptions {
 }
 
 enum PodStatus {
-  OK = 'podOK',
-  Warning = 'podWarning',
-  Error = 'podError',
+  OK = 'ok',
+  Warning = 'warning',
+  Error = 'error',
 }
-const podStatusTypes: PodStatus[] = [
-  PodStatus.OK,
-  PodStatus.Warning,
-  PodStatus.Error,
-];
 
 function calculatePodPercentages(options: ViewerNodeOptions) {
   let podOptions = {};
   if (options.podDetails) {
-    let podCount = 0;
-    podStatusTypes.forEach(statusType => {
-      if (options.podDetails[statusType]) {
-        podCount += options.podDetails[statusType];
-      }
-    });
+    const podDetails = options.podDetails as PodDetails;
 
-    const podStatus = podStatusTypes.reduce((previousValue, currentValue) => {
-      previousValue[`${currentValue}Percentage`] =
-        (options.podDetails[currentValue] / podCount) * 100 || 0;
-      return previousValue;
-    }, {});
-    podOptions = { ...podOptions, ...podStatus };
+    if (podDetails.pods) {
+      let status = {
+        [PodStatus.OK]: 0,
+        [PodStatus.Warning]: 0,
+        [PodStatus.Error]: 0,
+      };
+      status = podDetails.pods.reduce((accum, pod) => {
+        accum[pod.status]++;
+        return accum;
+      }, status);
+
+      const podCount = Object.values(status).reduce((prev, cur) => prev + cur);
+      const summary = Object.entries(status).reduce((accum, [name, value]) => {
+        accum[`${name}Percentage`] = (value / podCount) * 100;
+        return accum;
+      }, {});
+
+      podOptions = { ...podOptions, ...summary };
+    }
   }
   return podOptions;
 }
@@ -115,7 +127,13 @@ export const defaultElements: ViewerElement[] = [
     kind: 'Pod',
     apiVersion: 'v1',
     podDetails: {
-      podOK: 5,
+      pods: [
+        { name: 'pod-1', status: 'ok' },
+        { name: 'pod-2', status: 'ok' },
+        { name: 'pod-3', status: 'ok' },
+        { name: 'pod-4', status: 'ok' },
+        { name: 'pod-5', status: 'ok' },
+      ],
     },
   }),
   node('ingress', {
