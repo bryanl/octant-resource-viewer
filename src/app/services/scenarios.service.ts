@@ -25,11 +25,11 @@ export class ScenariosService {
             id: 'pods-1',
             podDetails: {
               pods: [
-                { name: 'pod-1', status: 'ok' },
-                { name: 'pod-2', status: 'ok' },
-                { name: 'pod-3', status: 'warning' },
-                { name: 'pod-4', status: 'warning' },
-                { name: 'pod-5', status: 'error' },
+                { name: 'pod-1', status: 'ok', node: 'node-1' },
+                { name: 'pod-2', status: 'ok', node: 'node-1' },
+                { name: 'pod-3', status: 'warning', node: 'node-2' },
+                { name: 'pod-4', status: 'warning', node: 'node-2' },
+                { name: 'pod-5', status: 'error', node: 'node-3' },
               ],
             },
           },

@@ -15,6 +15,7 @@ export interface PodDetails {
 export interface PodData {
   name: string;
   status: string;
+  node: string;
 }
 
 export interface ViewerNode {
@@ -128,11 +129,11 @@ export const defaultElements: ViewerElement[] = [
     apiVersion: 'v1',
     podDetails: {
       pods: [
-        { name: 'pod-1', status: 'ok' },
-        { name: 'pod-2', status: 'ok' },
-        { name: 'pod-3', status: 'ok' },
-        { name: 'pod-4', status: 'ok' },
-        { name: 'pod-5', status: 'ok' },
+        { name: 'pod-1', status: 'ok', node: 'node-1' },
+        { name: 'pod-2', status: 'ok', node: 'node-1' },
+        { name: 'pod-3', status: 'ok', node: 'node-2' },
+        { name: 'pod-4', status: 'ok', node: 'node-2' },
+        { name: 'pod-5', status: 'ok', node: 'node-3' },
       ],
     },
   }),
