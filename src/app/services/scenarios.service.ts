@@ -43,8 +43,17 @@ export class ScenariosService {
             actions: [
               { action: removeEdge, options: { id: 'ingress-service' } },
               {
-                action: setNodeStatus,
-                options: { id: 'ingress', status: 'error' },
+                action: setNodeOptions,
+                options: {
+                  id: 'ingress',
+                  nodeOptions: {
+                    apiVersion: 'extensions/v1beta1',
+                    kind: 'Ingress',
+                    name: 'ingress',
+                    status: 'error',
+                    issues: [{ content: 'ingress broke', status: 'error' }],
+                  },
+                },
               },
             ],
           },
@@ -64,12 +73,17 @@ export class ScenariosService {
                 },
               },
               {
-                action: setNodeStatus,
-                options: { id: 'ingress', status: 'error' },
-              },
-              {
-                action: setNodeStatus,
-                options: { id: 'ingress', status: 'ok' },
+                action: setNodeOptions,
+                options: {
+                  id: 'ingress',
+                  nodeOptions: {
+                    apiVersion: 'extensions/v1beta1',
+                    kind: 'Ingress',
+                    name: 'ingress',
+                    status: 'ok',
+                    issues: [],
+                  },
+                },
               },
             ],
           },
@@ -185,19 +199,17 @@ const setPodDetails: MutationAction = (
   duration: number
 ): ScenarioStep => {
   const newElements = elements.map(element => {
-    if (element.type !== 'node') {
-      return element;
-    } else if (element.data.id === options.id) {
-      const el = element as ViewerNode;
-      if (!options.podDetails) {
-        return element;
-      }
-
-      el.data.podDetails = options.podDetails;
-      return node(el.data.id, el.data);
-    } else {
+    if (element.type !== 'node' || element.data.id !== options.id) {
       return element;
     }
+
+    const el = element as ViewerNode;
+    if (!options.podDetails) {
+      return element;
+    }
+
+    el.data.podDetails = options.podDetails;
+    return node(el.data.id, el.data);
   });
 
   return {
@@ -207,22 +219,18 @@ const setPodDetails: MutationAction = (
   };
 };
 
-const setNodeStatus: MutationAction = (
+const setNodeOptions: MutationAction = (
   elements: ViewerElement[],
   name: string,
   options: MutationOption,
   duration: number
 ): ScenarioStep => {
   const newElements = elements.map(element => {
-    if (element.type !== 'node') {
-      return element;
-    } else if (element.data.id === options.id) {
-      const el = element as ViewerNode;
-      el.data.status = options.status;
-      return el;
-    } else {
+    if (element.type !== 'node' || element.data.id !== options.id) {
       return element;
     }
+
+    return node(element.data.id, options.nodeOptions);
   });
 
   return {

@@ -5,7 +5,23 @@ export interface ViewerNodeData {
   podDetails?: PodDetails;
   id: string;
   label: string;
-  status?: string;
+  status: string;
+  issues: NodeIssue[];
+}
+
+export interface ViewerNodeOptions {
+  name: string;
+  status: string;
+  apiVersion: string;
+  kind: string;
+
+  podDetails?: PodDetails;
+  issues: NodeIssue[];
+}
+
+export interface NodeIssue {
+  content: string;
+  status: string;
 }
 
 export interface PodDetails {
@@ -36,15 +52,6 @@ export interface PodDetails {
   podOK?: number;
   podWarning?: number;
   podError?: number;
-}
-
-export interface ViewerNodeOptions {
-  name: string;
-  status?: string;
-  apiVersion: string;
-  kind: string;
-
-  podDetails?: PodDetails;
 }
 
 enum PodStatus {
@@ -84,6 +91,10 @@ function calculatePodPercentages(options: ViewerNodeOptions) {
 export const node = (id: string, options: ViewerNodeOptions): ViewerNode => {
   const label = `${options.name}\n${options.apiVersion} ${options.kind}`;
 
+  if (!options.issues) {
+    options.issues = [];
+  }
+
   return {
     type: 'node',
     data: { id, label, ...options, ...calculatePodPercentages(options) },
@@ -109,18 +120,21 @@ export const defaultElements: ViewerElement[] = [
     name: 'deployment',
     apiVersion: 'apps/v1',
     kind: 'Deployment',
+    issues: [],
   }),
   node('replica-set-1', {
     apiVersion: 'apps/v1',
     kind: 'ReplicaSet',
     name: 'deployment-1a',
     status: 'ok',
+    issues: [],
   }),
   node('service', {
     apiVersion: 'v1',
     kind: 'Service',
     name: 'service',
     status: 'ok',
+    issues: [],
   }),
   node('pods-1', {
     status: 'ok',
@@ -136,42 +150,49 @@ export const defaultElements: ViewerElement[] = [
         { name: 'pod-5', status: 'ok', node: 'node-3' },
       ],
     },
+    issues: [],
   }),
   node('ingress', {
     apiVersion: 'extensions/v1beta1',
     kind: 'Ingress',
     name: 'ingress',
     status: 'ok',
+    issues: [],
   }),
   node('service-account', {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
     name: 'service-account',
     status: 'ok',
+    issues: [],
   }),
   node('cm1', {
     apiVersion: 'v1',
     kind: 'ConfigMap',
     name: 'cm1',
     status: 'ok',
+    issues: [],
   }),
   node('cm2', {
     apiVersion: 'v1',
     kind: 'ConfigMap',
     name: 'cm2',
     status: 'ok',
+    issues: [],
   }),
   node('cm3', {
     apiVersion: 'v1',
     kind: 'ConfigMap',
     name: 'cm3',
     status: 'ok',
+    issues: [],
   }),
   node('cm4', {
     apiVersion: 'v1',
     kind: 'ConfigMap',
     name: 'cm4',
     status: 'ok',
+    issues: [],
   }),
   connect(
     'replica-set-1',

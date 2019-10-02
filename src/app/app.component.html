@@ -30,7 +30,7 @@
       </div>
       <div class="clr-col-3 sidebar">
         <app-scenarios (elements)="setElements($event)" [scenario]="currentScenario"></app-scenarios>
-        <app-object-status [nodeData]="selected"></app-object-status>
+        <app-object-status [nodeData]="selected" [elements]="elements"></app-object-status>
       </div>
     </div>
   </div>
