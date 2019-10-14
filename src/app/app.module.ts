@@ -11,6 +11,10 @@ import { ResourceViewerComponent } from './components/resource-viewer/resource-v
 import { Ng5SliderModule } from 'ng5-slider';
 import { ScenariosComponent } from './components/scenarios/scenarios.component';
 import { ObjectStatusComponent } from './components/object-status/object-status.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { PodViewComponent } from './components/pod-view/pod-view.component';
+import { DynamicContentComponent } from './components/dynamic-content/dynamic-content.component';
+import { UnknownDynamicComponent } from './components/unknown-dynamic/unknown-dynamic.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +23,9 @@ import { ObjectStatusComponent } from './components/object-status/object-status.
     ResourceViewerComponent,
     ScenariosComponent,
     ObjectStatusComponent,
+    PodViewComponent,
+    DynamicContentComponent,
+    UnknownDynamicComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,7 +34,9 @@ import { ObjectStatusComponent } from './components/object-status/object-status.
     BrowserAnimationsModule,
     FormsModule,
     Ng5SliderModule,
+    NgxChartsModule,
   ],
+  entryComponents: [PodViewComponent, UnknownDynamicComponent],
   providers: [],
   bootstrap: [AppComponent],
 })

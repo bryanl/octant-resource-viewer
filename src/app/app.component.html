@@ -23,12 +23,12 @@
   </header>
   <div class="container">
     <div class="viewer clr-row">
-      <div class="clr-col-9">
+      <div class="clr-col-8">
         <div class="view-container">
           <app-resource-viewer [elements]="elements" (selected)="nodeSelected($event)"></app-resource-viewer>
         </div>
       </div>
-      <div class="clr-col-3 sidebar">
+      <div class="clr-col-4 sidebar">
         <app-scenarios (elements)="setElements($event)" [scenario]="currentScenario"></app-scenarios>
         <app-object-status [nodeData]="selected" [elements]="elements"></app-object-status>
       </div>

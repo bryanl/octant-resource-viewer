@@ -4,7 +4,9 @@
       <clr-tab>
         <button clrTabLink>{{nodeData?.name}}</button>
         <clr-tab-content>
-          {{ nodeData | json}}
+          <ng-container *ngFor="let view of nodeData?.views">
+            <app-dynamic-content [view]="view"></app-dynamic-content>
+          </ng-container>
         </clr-tab-content>
       </clr-tab>
       <clr-tab>

@@ -1,3 +1,5 @@
+import { View } from '../view';
+
 export interface ViewerNodeData {
   apiVersion: string;
   kind: string;
@@ -7,6 +9,7 @@ export interface ViewerNodeData {
   label: string;
   status: string;
   issues: NodeIssue[];
+  views?: View[];
 }
 
 export interface ViewerNodeOptions {
@@ -17,6 +20,8 @@ export interface ViewerNodeOptions {
 
   podDetails?: PodDetails;
   issues: NodeIssue[];
+
+  views?: View[];
 }
 
 export interface NodeIssue {
@@ -88,6 +93,12 @@ function calculatePodPercentages(options: ViewerNodeOptions) {
   return podOptions;
 }
 
+/**
+ * Create a node
+ *
+ * @param id id for the node
+ * @param options options for the node
+ */
 export const node = (id: string, options: ViewerNodeOptions): ViewerNode => {
   const label = `${options.name}\n${options.apiVersion} ${options.kind}`;
 
@@ -151,6 +162,13 @@ export const defaultElements: ViewerElement[] = [
       ],
     },
     issues: [],
+    views: [
+      {
+        metadata: {
+          type: 'pod-view',
+        },
+      },
+    ],
   }),
   node('ingress', {
     apiVersion: 'extensions/v1beta1',
