@@ -1,4 +1,17 @@
 <div #container class="container">
+  <div class="breadcrumbs">
+    <ng-container *ngFor="let breadcrumb of breadcrumbs; let i = index">
+      <ng-container *ngIf="i > 0">
+        /
+      </ng-container>
+      <ng-container *ngIf="breadcrumb.action.length > 0; else noLink">
+        <a (click)="breadcrumbAction(breadcrumb.action)">{{breadcrumb.label}}</a>
+      </ng-container>
+      <ng-template #noLink>
+        <span>{{ breadcrumb.label}}</span>
+      </ng-template>
+    </ng-container>
+  </div>
   <ngx-charts-tree-map
     [view]="[container.offsetWidth, 200]"
     [results]="data"

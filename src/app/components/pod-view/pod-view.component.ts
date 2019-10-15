@@ -11,16 +11,18 @@ const podPrefix = 'pod/';
   styleUrls: ['./pod-view.component.scss'],
 })
 export class PodViewComponent extends DynamicComponent implements OnInit {
+  @Input() view: PodView;
+
   data: any[];
 
-  @Input() view: PodView;
+  breadcrumbs = [];
 
   constructor() {
     super();
   }
 
   ngOnInit() {
-    this.data = this.nodeData();
+    this.selectNodes();
   }
 
   labelFormat(data) {
@@ -36,12 +38,28 @@ export class PodViewComponent extends DynamicComponent implements OnInit {
 
   onSelect = (item: any) => {
     if (item.name.startsWith(nodePrefix)) {
-      this.data = this.podData(item.name.substr(nodePrefix.length));
+      const nodeName = item.name.substr(nodePrefix.length);
+      this.data = this.podData(nodeName);
+      this.breadcrumbs = [
+        { label: 'nodes', action: 'root' },
+        { label: nodeName, action: '' },
+      ];
       return;
     }
 
     console.log(`can't select`, item);
   };
+
+  selectNodes() {
+    this.data = this.nodeData();
+    this.breadcrumbs = [{ label: 'nodes', action: 'root' }];
+  }
+
+  breadcrumbAction(action) {
+    if (action === 'root') {
+      this.selectNodes();
+    }
+  }
 
   private nodeData = () =>
     Object.entries(
