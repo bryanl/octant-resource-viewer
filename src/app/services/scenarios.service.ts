@@ -26,8 +26,8 @@ export class ScenariosService {
             podDetails: {
               pods: [
                 { name: 'pod-1', status: 'ok', node: 'node-1' },
-                { name: 'pod-2', status: 'ok', node: 'node-1' },
-                { name: 'pod-3', status: 'warning', node: 'node-2' },
+                { name: 'pod-2', status: 'warning', node: 'node-1' },
+                { name: 'pod-3', status: 'ok', node: 'node-2' },
                 { name: 'pod-4', status: 'warning', node: 'node-2' },
                 { name: 'pod-5', status: 'error', node: 'node-3' },
               ],
@@ -40,8 +40,8 @@ export class ScenariosService {
                 config: {
                   pods: [
                     { name: 'pod-1', status: 'ok', node: 'node-1' },
-                    { name: 'pod-2', status: 'ok', node: 'node-1' },
-                    { name: 'pod-3', status: 'warning', node: 'node-2' },
+                    { name: 'pod-2', status: 'warning', node: 'node-1' },
+                    { name: 'pod-3', status: 'ok', node: 'node-2' },
                     { name: 'pod-4', status: 'warning', node: 'node-2' },
                     { name: 'pod-5', status: 'error', node: 'node-3' },
                   ],

@@ -17,6 +17,8 @@ export class PodViewComponent extends DynamicComponent implements OnInit {
 
   breadcrumbs = [];
 
+  private viewType: string;
+
   constructor() {
     super();
   }
@@ -27,9 +29,9 @@ export class PodViewComponent extends DynamicComponent implements OnInit {
 
   labelFormat(data) {
     if (data.label.startsWith(nodePrefix)) {
-      return data.label.substr(nodePrefix.length);
+      return nodeName(data.label);
     } else if (data.label.startsWith(podPrefix)) {
-      return data.label.substr(podPrefix.length);
+      return podName(data.label);
     }
 
     return data.label;
@@ -41,20 +43,20 @@ export class PodViewComponent extends DynamicComponent implements OnInit {
 
   onSelect = (item: any) => {
     if (item.name.startsWith(nodePrefix)) {
-      const nodeName = item.name.substr(nodePrefix.length);
-      this.data = this.podData(nodeName);
+      const name = nodeName(item.name);
+      this.data = this.podData(name);
+      this.viewType = 'pods';
       this.breadcrumbs = [
         { label: 'nodes', action: 'root' },
-        { label: nodeName, action: '' },
+        { label: name, action: '' },
       ];
       return;
     }
-
-    console.log(`can't select`, item);
   };
 
   selectNodes() {
     this.data = this.nodeData();
+    this.viewType = 'nodes';
     this.breadcrumbs = [{ label: 'nodes', action: 'root' }];
   }
 
@@ -75,8 +77,33 @@ export class PodViewComponent extends DynamicComponent implements OnInit {
       return { name, value: value[1] };
     });
 
-  private nodeColors = node => {
-    const pods = this.view.config.pods.filter(pod => pod.node === node);
+  colors = item => {
+    if (this.viewType === 'pods') {
+      return this.podColors(item);
+    } else if (this.viewType === 'nodes') {
+      return this.nodeColors(item);
+    }
+
+    return 'grey';
+  };
+
+  podColors = pod => {
+    const cur = this.view.config.pods.find(
+      value => value.name === podName(pod)
+    );
+    if (cur.status === 'error') {
+      return 'red';
+    } else if (cur.status === 'warning') {
+      return 'yellow';
+    }
+
+    return 'green';
+  };
+
+  nodeColors = node => {
+    const pods = this.view.config.pods.filter(
+      pod => pod.node === nodeName(node)
+    );
     if (this.hasStatus(pods, 'error')) {
       return 'red';
     } else if (this.hasStatus(pods, 'warning')) {
@@ -86,15 +113,18 @@ export class PodViewComponent extends DynamicComponent implements OnInit {
     return 'green';
   };
 
-  private podData = (nodeName: string) =>
+  private podData = (name: string) =>
     this.view.config.pods
-      .filter(pod => pod.node === nodeName)
+      .filter(pod => pod.node === name)
       .map(pod => {
-        const name = `${podPrefix}${pod.name}`;
-        return { name, value: 1 };
+        const label = `${podPrefix}${pod.name}`;
+        return { name: label, value: 1 };
       });
 
   private hasStatus = (pods: PodStatus[], status: string) => {
     return pods.find(pod => pod.status === status);
   };
 }
+
+const nodeName = (s: string) => s.substr(nodePrefix.length);
+const podName = (s: string) => s.substr(podPrefix.length);

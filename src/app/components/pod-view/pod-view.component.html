@@ -5,7 +5,7 @@
         /
       </ng-container>
       <ng-container *ngIf="breadcrumb.action.length > 0; else noLink">
-        <a (click)="breadcrumbAction(breadcrumb.action)">{{breadcrumb.label}}</a>
+        <a href='#' (click)="breadcrumbAction(breadcrumb.action)">{{breadcrumb.label}}</a>
       </ng-container>
       <ng-template #noLink>
         <span>{{ breadcrumb.label}}</span>
@@ -15,12 +15,16 @@
   <ngx-charts-tree-map
     [view]="[container.offsetWidth, 200]"
     [results]="data"
-    [customColors]="nodeColors"
+    [customColors]="colors"
     [animations]="false"
     [labelFormatting]="labelFormat"
     [valueFormatting]="valueFormat"
     (select)="onSelect($event)">
 
   </ngx-charts-tree-map>
+
+  <div>
+    {{ view | json }}
+  </div>
 </div>
 
