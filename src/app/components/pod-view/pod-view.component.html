@@ -1,5 +1,11 @@
-<p>pod-view works!</p>
+<div #container class="container">
+  <ngx-charts-tree-map
+    [view]="[container.offsetWidth, 200]"
+    [results]="data"
+    [customColors]="nodeColors"
+    [animations]="false"
+  [labelFormatting]="">
 
-<div>
-  {{ view | json}}
+  </ngx-charts-tree-map>
 </div>
+

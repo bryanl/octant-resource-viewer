@@ -32,6 +32,22 @@ export class ScenariosService {
                 { name: 'pod-5', status: 'error', node: 'node-3' },
               ],
             },
+            views: [
+              {
+                metadata: {
+                  type: 'pod-view',
+                },
+                config: {
+                  pods: [
+                    { name: 'pod-1', status: 'ok', node: 'node-1' },
+                    { name: 'pod-2', status: 'ok', node: 'node-1' },
+                    { name: 'pod-3', status: 'warning', node: 'node-2' },
+                    { name: 'pod-4', status: 'warning', node: 'node-2' },
+                    { name: 'pod-5', status: 'error', node: 'node-3' },
+                  ],
+                },
+              },
+            ],
           },
         },
       ]),
@@ -209,6 +225,8 @@ const setPodDetails: MutationAction = (
     }
 
     el.data.podDetails = options.podDetails;
+    el.data.views = options.views;
+    el.data.issues = options.issues;
     return node(el.data.id, el.data);
   });
 

@@ -167,6 +167,15 @@ export const defaultElements: ViewerElement[] = [
         metadata: {
           type: 'pod-view',
         },
+        config: {
+          pods: [
+            { name: 'pod-1', status: 'ok', node: 'node-1' },
+            { name: 'pod-2', status: 'ok', node: 'node-1' },
+            { name: 'pod-3', status: 'ok', node: 'node-2' },
+            { name: 'pod-4', status: 'ok', node: 'node-2' },
+            { name: 'pod-5', status: 'ok', node: 'node-3' },
+          ],
+        },
       },
     ],
   }),
