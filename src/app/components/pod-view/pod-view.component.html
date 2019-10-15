@@ -4,7 +4,8 @@
     [results]="data"
     [customColors]="nodeColors"
     [animations]="false"
-  [labelFormatting]="">
+    [labelFormatting]="labelFormat"
+    (select)="onSelect($event)">
 
   </ngx-charts-tree-map>
 </div>
