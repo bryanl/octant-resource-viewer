@@ -32,8 +32,11 @@ export class PodViewComponent extends DynamicComponent implements OnInit {
       return data.label.substr(podPrefix.length);
     }
 
-    console.log(data);
     return data.label;
+  }
+
+  valueFormat(data) {
+    return '';
   }
 
   onSelect = (item: any) => {
