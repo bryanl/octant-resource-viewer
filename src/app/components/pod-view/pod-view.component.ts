@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DynamicComponent } from '../dynamic-component';
 import { PodStatus, PodView } from '../../view';
+import { colors } from '../../colors';
 
 const nodePrefix = 'node/';
 const podPrefix = 'pod/';
@@ -92,12 +93,12 @@ export class PodViewComponent extends DynamicComponent implements OnInit {
       value => value.name === podName(pod)
     );
     if (cur.status === 'error') {
-      return 'red';
+      return colors.error;
     } else if (cur.status === 'warning') {
-      return 'yellow';
+      return colors.warning;
     }
 
-    return 'green';
+    return colors.ok;
   };
 
   nodeColors = node => {
@@ -105,12 +106,12 @@ export class PodViewComponent extends DynamicComponent implements OnInit {
       pod => pod.node === nodeName(node)
     );
     if (this.hasStatus(pods, 'error')) {
-      return 'red';
+      return colors.error;
     } else if (this.hasStatus(pods, 'warning')) {
-      return 'yellow';
+      return colors.warning;
     }
 
-    return 'green';
+    return colors.ok;
   };
 
   private podData = (name: string) =>
