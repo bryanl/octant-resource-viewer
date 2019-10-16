@@ -13,8 +13,9 @@ const selectedBorderWidth = 2;
 
 const dagreLayout = {
   name: 'dagre',
-  rankDir: 'RL',
-  ranker: 'network-tree',
+  rankDir: 'BT',
+  ranker: 'longest-path',
+  align: 'DR',
   spacingFactor: 1.1,
 };
 
